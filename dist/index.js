@@ -11,13 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
 const chrome_1 = require("selenium-webdriver/chrome");
-function example() {
+function openMeet(driver) {
     return __awaiter(this, void 0, void 0, function* () {
-        const options = new chrome_1.Options({});
-        options.addArguments("--disable-blink-features=AutomationControlled");
-        options.addArguments("--use-fake-ui-for-media-stream");
-        options;
-        let driver = yield new selenium_webdriver_1.Builder().forBrowser(selenium_webdriver_1.Browser.CHROME).build();
         try {
             yield driver.get('https://meet.google.com/zzq-gvhe-kow');
             const popupButton = yield driver.wait(selenium_webdriver_1.until.elementLocated(selenium_webdriver_1.By.xpath('//span[contains(text(), "Got it")]')), 10000);
@@ -39,4 +34,19 @@ function example() {
         }
     });
 }
-example();
+function getDriver() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const options = new chrome_1.Options({});
+        options.addArguments("--disable-blink-features=AutomationControlled");
+        options.addArguments("--use-fake-ui-for-media-stream");
+        let driver = yield new selenium_webdriver_1.Builder().forBrowser(selenium_webdriver_1.Browser.CHROME).setChromeOptions(options).build();
+        return driver;
+    });
+}
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const driver = yield getDriver();
+        yield openMeet(driver);
+    });
+}
+main();

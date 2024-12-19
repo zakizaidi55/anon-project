@@ -1,8 +1,7 @@
-import { Builder, Browser, By, Key, until } from 'selenium-webdriver'
+import { Builder, Browser, By, Key, until, WebDriver } from 'selenium-webdriver'
 import {Options} from "selenium-webdriver/chrome"
-import { isFunctionDeclaration } from 'typescript';
 
-async function openMeet() {
+async function openMeet(driver:WebDriver) {
   
   try {
     await driver.get('https://meet.google.com/zzq-gvhe-kow')
@@ -25,9 +24,18 @@ async function openMeet() {
 }
 
 async function getDriver() {
+  const options = new Options({});
+  options.addArguments("--disable-blink-features=AutomationControlled");
+  options.addArguments("--use-fake-ui-for-media-stream");
+  let driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
+  
 
+  return driver;
 }
 
 async function main() {
     const driver = await getDriver();
+    await openMeet(driver);
 }
+
+main()
